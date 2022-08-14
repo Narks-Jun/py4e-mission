@@ -1,0 +1,273 @@
+Py4e) jamie_07team 4주차 미션
+
+Quiz 1
+```
+# f"{숫자:,}"
+# print(f"{1000:,}"
+
+def userInput() :
+    while True :
+        try :
+            num = float(input("Input Number:"))
+            break
+        except :
+            print("Invaild input. Please enter numeric input.")
+    return num
+
+def comma_num(a) :
+    # 역순으로 뒤집어 정렬하기
+    reversed_a = [i for i in reversed(a)]
+    # print(reversed_a)
+    # print(len(reversed_a))
+
+    # 4번째 숫자마다 앞에 ,붙이기
+    n = 3
+    while n < len(reversed_a) :
+        reversed_a[n] = "," + reversed_a[n]
+        n = n + 3
+    # print(reversed_a)
+
+    # list > str로 변환
+    # b = "".join(reversed_a) 로 사용 가능
+    b = ""
+    for i in reversed_a :
+        b = b + i
+    # print(b)
+
+    # str > list로 변환하면서 역순으로 뒤집기
+    reversed_reversed_a = [i for i in reversed(b)]
+    # print(reversed_reversed_a)
+
+    # list > str로 변환
+    # c = "".join(reversed_reversed_a) 로 사용 가능
+    c = ""
+    for i in reversed_reversed_a :
+        c = c + i
+    # print(c)
+    # print(type(c))
+    return c
+
+# 정수인지 소수인지 확인
+def int_or_float(x) :
+    if int(x) == float(x):
+        x = int(x)
+        x = str(x)
+        return comma_num(x)
+    else:
+        x = str(x)
+        k = x.find(".")
+        x_integer = x[:k]
+        x_decimal_notation = x[k + 1:]
+        # print(x_integer)
+        # print(x_decimal_notation)
+        return comma_num(x_integer) + "." + x_decimal_notation
+
+# 음수인지 아닌지 확인
+def check_nagative(y) :
+    if float(y) < 0 :
+        y = abs(y)
+        print(f"-{int_or_float(y)}")
+        # type(int_or_float(y))
+
+    else :
+        print(int_or_float(y))
+
+u = userInput()
+check_nagative(u)
+# comma_num(userInput())
+```
+
+Quiz 2
+```
+# copy text
+# 특정 파일에서 특정 단어가 포함된 횟수에 대해서 작성된 코드입니다.
+# split()을 통한 list 생성을 알아야 합니다.
+# .count method 를 알면 더욱 쉽게 작성 가능합니다.
+
+def save_txt(x):
+    fh = open(x, "w", encoding='UTF8')
+    # 클립보드는 시스템 영역이라 os 의 api 를 핸들링 해야 합니다. 그리고 os에 종속적입니다.
+    # ctrl c, v 를 하려면 모듈을 설치해야 합니다
+    import pyperclip
+    clip_text = pyperclip.paste()
+    # print(clip_text)
+    fh.write(clip_text.replace("\n",""))
+    fh.close()
+
+
+def count_text(y, z) :
+    fh = open(y, "r", encoding='UTF8')
+    read_text = fh.read()
+
+    # print(read_text.count("def")) 아래보다 훨씬 간단함.
+    count = 0
+    for w in read_text.split() :
+        if z in w :
+            count = count + 1
+    return count
+    fh.close()
+
+def file_name():
+    try :
+        file = input("Save as:")
+        return file
+    except :
+        print("Plase input file name")
+        quit()
+a = file_name()
+b = input("Enter the word you want to find:")
+
+save_txt(a)
+print(count_text(a, b))
+```
+
+Quiz 3
+```
+def save_txt(x):
+    fh = open(x, "w", encoding='UTF8')
+    # 클립보드는 시스템 영역이라 os 의 api 를 핸들링 해야 합니다. 그리고 os에 종속적입니다.
+    # ctrl c, v 를 하려면 모듈을 설치해야 합니다
+    import pyperclip
+    clip_text = pyperclip.paste()
+    # print(clip_text)
+    fh.write(clip_text.replace("\n",""))
+    fh.close()
+
+# 잘못 된 조건이 없을 경우 True 값으로 반환, 있을 경우 False 값으로 반환
+def check_wrong_component(m, n):
+    if not n.startswith("010"):
+        return False
+    elif not "-" in n:
+        return False
+    elif not len(n) == 13:
+        return False
+    else :
+        return True
+
+def find_wrong_guest(y):
+    with open(y, "r", encoding='UTF8') as fh:
+        print("Guest_book")
+        for i in fh :
+            i = i.strip()
+            print(i)
+    with open(y, "r", encoding='UTF8') as fh:
+        print("Wrong_guest_book")
+        for i in fh:
+            i = i.strip()
+            # print(i)
+            comma = i.find(",")
+            guest_name = i[:comma]
+            # print(guest_name)
+            guest_number = i[comma+1:]
+            # print(guest_number)
+            # print(len(guest_number))
+            if check_wrong_component(guest_name, guest_number) is False :
+                print(f"잘 못 쓴 사람:{guest_name}")
+                print(f"잘 못 쓴 번호:{guest_number}","\n")
+
+
+a = "test1.txt"
+
+save_txt(a)
+find_wrong_guest(a)
+```
+
+Quiz 4
+```
+def userinput_with_hyphen():
+    while True:
+        try :
+            id = input("Please enter your ID number:")
+            if not "-" in id:
+                print("Please enter ID Number with hyphen")
+                continue
+            elif len(id) != 14 :
+                print("ID number must be 14 digits")
+                continue
+            elif not id.find("-") == 6 :
+                print("Enter year and month without century")
+                continue
+            int(id[:6])
+            int(id[7:])
+            if not int(id[2:4]) < 13 :
+                print("Please enter a number under 13 for the month")
+                continue
+            if not int(id[4:6]) < 32:
+                print("Please enter a number under 32 for the date")
+                continue
+            return id
+        except :
+            print("Please enter the numeric input")
+            continue
+
+# 하이픈 없는게 예외 케이스가 더 적다(?)
+def userinput_without_hyphen():
+    while True:
+        try :
+            id = input("Please enter your ID number:")
+            int_id = int(id)
+            if len(id) != 13 :
+                print("ID number must be 13 digits")
+                continue
+            if not int(id[2:4]) < 13 :
+                print("Please enter a number under 13 for the month")
+                continue
+            if not int(id[4:6]) < 32:
+                print("Please enter a number under 32 for the date")
+                continue
+            return id
+        except :
+            if "-" in id :
+                print("Please enter ID Number without hyphen")
+                continue
+            else :
+                print("Please enter the numeric input")
+                continue
+
+def id_number(x):
+    front = x[:6]
+    birth_year = front[:2]
+    birth_month = front[2:4]
+    back = x[7:]
+    gender = back[:1]
+    # print(gender)
+    ig = int(gender)
+    if 22 >= int(birth_year) >= 00 :
+        while True:
+            check_year = input("2000년생 이후 출생자 입니까? 맞으면 o 아니면 x:")
+            if check_year == "o":
+                if ig == 3 or ig == 7 :
+                    return birth_year, birth_month, True  # True는 남자 출력 예정
+                elif ig == 4 or ig == 8 :
+                    return birth_year, birth_month, False  # False는 여자 출력 예정
+                else:
+                    print("잘못된 번호 입니다\n올바른 번호를 넣어 주세요")
+                    quit()
+            elif check_year == "x":
+                if ig == 1 or ig == 5 :
+                    return birth_year, birth_month, True
+                elif ig == 2 or ig == 6 :
+                    return birth_year, birth_month, False
+                else :
+                    print("살아있는 사람이 아닙니다")
+                    quit()
+            else:
+                print("Please enter o or x")
+                continue
+    else :
+        if ig == 1 or ig == 3 :
+            return birth_year, birth_month, True
+        elif ig == 2 or ig == 4 :
+            return birth_year, birth_month, False
+
+def man_or_woman(x, y, z):
+    if z is True :
+        print(f"{x}년{y}월 남자")
+    else :
+        print(f"{x}년{y}월 여자")
+
+
+a = userinput_with_hyphen()
+birth_year, birth_month, True_or_False = id_number(a)
+man_or_woman(birth_year, birth_month, True_or_False)
+```
